@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TezzzT · Security Researcher</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/extra.css">
+    <link rel="stylesheet" href="css/cursor.css">
+    <link rel="stylesheet" href="css/hud.css">
+    <link rel="stylesheet" href="css/skills.css">
+    <link rel="stylesheet" href="css/themes.css">
+    <link rel="stylesheet" href="css/decor.css">
+</head>
+
+<body>
+
+    <!-- Audio Elements -->
+    <audio id="audio-click" src="data:audio/wav;base64,UklGRl9vTQA..." preload="auto"></audio>
+    <audio id="audio-type" src="data:audio/wav;base64,UklGRl9vTQA..." preload="auto"></audio>
+    <audio id="audio-boot" src="data:audio/wav;base64,UklGRl9vTQA..." preload="auto"></audio>
+
+    <!-- Visual Effects -->
+    <div class="cyber-grid"></div>
+
+    <!-- Boot Screen -->
+    <div id="boot-screen" class="boot-screen">
+        <div class="boot-content">
+            <div class="boot-line">TEZZZT-BIOS (C) 2026 Security Systems Inc.</div>
+            <div class="boot-line">Version 2.0.4-alpha</div>
+            <br>
+            <div class="boot-line">CPU: 16-Core Quantum Processor</div>
+            <div class="boot-line">Memory: 64TB Crystal RAM ... OK</div>
+            <br>
+            <div class="boot-line" id="boot-log"></div>
+        </div>
+    </div>
+
+    <div id="interface">
+        <!-- Visual Effects -->
+        <div class="cyber-grid"></div>
+        <div class="hex-sidebar left"></div>
+        <div class="hex-sidebar right"></div>
+
+        <!-- HUD Overlay -->
+        <div class="hud-corner top-left"></div>
+        <div class="hud-corner top-right"></div>
+        <div class="hud-corner bottom-left"></div>
+        <div class="hud-corner bottom-right"></div>
+        <div class="hud-info">SYS.ONLINE // <span id="clock">00:00:00</span></div>
+
+        <!-- Modal Template -->
+        <div id="project-modal" class="modal-overlay">
+            <div class="modal-window">
+                <div class="modal-header">
+                    <span>SECURE_CONNECTION</span>
+                    <span class="modal-close" onclick="closeModal()">[X]</span>
+                </div>
+                <div class="modal-content" id="modal-body">
+                    <!-- Content injected via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Background Canvas for Matrix Effect -->
+        <canvas id="matrix-canvas" style="position:fixed; top:0; left:0; z-index:-1; opacity:0.1;"></canvas>
+        <div class="bg-mesh"></div>
+        <div class="scanlines"></div>
+
+        <div class="container">
+
+            <!-- Hero Section -->
+            <header class="hero">
+                <div class="hero-content">
+                    <div class="glitch-wrapper">
+                        <h1 class="hero-title">Tezzz<span class="text-accent">T</span></h1>
+                    </div>
+                    <div class="hero-subtitle">
+                        <span id="type-text"></span><span class="blink">_</span>
+                    </div>
+
+                    <div class="glass-panel"
+                        style="display:inline-flex; align-items:center; padding: 0.5rem 1.5rem; border-radius: 50px;">
+                        <span class="status-indicator"></span>
+                        <span class="mono" style="font-size: 0.9rem; color: #aaa;">Active · Ready to engage</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Terminal Section -->
+            <section class="terminal-wrapper">
+                <div class="terminal-window">
+                    <div class="terminal-header">
+                        <div class="dot red"></div>
+                        <div class="dot yellow"></div>
+                        <div class="dot green"></div>
+                        <div style="margin-left:auto; font-size:0.8rem; color:#666;">bash — 80x24</div>
+                    </div>
+                    <div class="terminal-body" id="term-body">
+                        <div id="term-output">
+                            <div class="command-line">
+                                <span class="prompt">root@tezzzt:~$</span> ./init_profile.sh
+                            </div>
+                            <div class="command-line">
+                                Loaded modules: <span class="text-accent">Reverse Engineering, Analyzers,
+                                    Exploits</span>
+                            </div>
+                            <div class="command-line">
+                                System ready. Type <span class="text-accent">'help'</span> for available commands.
+                            </div>
+                        </div>
+                        <div class="input-line">
+                            <span class="prompt">root@tezzzt:~$</span>
+                            <input type="text" id="term-input" autocomplete="off" spellcheck="false" autofocus>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Section -->
+            <section class="mb-2">
+                <div class="glass-panel">
+                    <h2 class="mb-2"><span class="text-accent">#</span> Profile</h2>
+                    <p style="font-size: 1.1rem; color: #ccc; max-width: 800px; margin-bottom: 2rem;">
+                        Security researcher y desarrollador orientado a bajo nivel.
+                        Especializado en ingeniería inversa, análisis binario,
+                        exploits y desarrollo de herramientas propias. Pasión por
+                        descubrir vulnerabilidades y crear soluciones técnicas avanzadas.
+                    </p>
+
+                    <div class="tag-container">
+                        <span class="tag">Linux / Kali</span>
+                        <span class="tag">Reverse Engineering</span>
+                        <span class="tag">Security Research</span>
+                        <span class="tag">Low-Level</span>
+                        <span class="tag">Exploit Development</span>
+                        <span class="tag">Binary Analysis</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Skills Section -->
+            <section class="mb-2">
+                <h2 class="mb-2"><span class="text-accent">#</span> Especialidades</h2>
+
+                <!-- Reverted to Grid-3 (User Request) -->
+                <div class="grid-3">
+                    <div class="glass-panel project-card" onclick="openModal('rev')">
+                        <h3 class="mono">Reverse Engineering</h3>
+                        <p class="text-muted">IDA · Análisis binario · Memory flow · Decompiling</p>
+                    </div>
+                    <div class="glass-panel project-card" onclick="openModal('sec')">
+                        <h3 class="mono">Security Research</h3>
+                        <p class="text-muted">CVEs · Bug Bounty · PoC exploits · Vulnerability analysis</p>
+                    </div>
+                    <div class="glass-panel project-card" onclick="openModal('low')">
+                        <h3 class="mono">C / C++</h3>
+                        <p class="text-muted">Low-level · Injections · Hooks · System programming</p>
+                    </div>
+                    <div class="glass-panel project-card" onclick="openModal('java')">
+                        <h3 class="mono">Java / Fabric</h3>
+                        <p class="text-muted">Minecraft mods & clients · Advanced implementations</p>
+                    </div>
+                    <div class="glass-panel project-card" onclick="openModal('linux')">
+                        <h3 class="mono">Linux / Kali</h3>
+                        <p class="text-muted">Pentesting · Custom tooling · Automation</p>
+                    </div>
+                    <div class="glass-panel project-card" onclick="openModal('game')">
+                        <h3 class="mono">Game Hacking</h3>
+                        <p class="text-muted">Internal cheats · MinHook · Memory manipulation</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Decorative Hex Dump Sidebar -->
+            <aside class="hex-sidebar">
+                <div id="hex-content"></div>
+            </aside>
+
+        </div>
+        <!-- Projects / Footer -->
+        <footer>
+            <div class="glass-panel" style="display:inline-block; margin-bottom: 2rem;">
+                <a href="https://github.com/TezzzT" target="_blank" class="mono text-accent" style="margin: 0 1rem;">
+                    → GitHub
+                </a>
+                <a href="#" class="mono text-accent"
+                    onclick="document.getElementById('term-input').focus(); return false;" style="margin: 0 1rem;">
+                    → Terminal
+                </a>
+            </div>
+            <p class="mono">
+                © 2026 · TezzzT — Engineered, not improvised.
+            </p>
+        </footer>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>

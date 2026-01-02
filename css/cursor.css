@@ -1,0 +1,38 @@
+/* Custom Cursor - DISABLED */
+/* body { cursor: default; } */
+
+a,
+button,
+.tag,
+.item,
+.glass-panel {
+    cursor: pointer;
+}
+
+/* Custom Webkit Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: #333;
+    border-radius: 4px;
+    border: 1px solid #444;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+}
+
+::-webkit-scrollbar-track {
+    background: #0f0f11;
+    border-left: 1px solid #222;
+}
+
+/* Selection Color */
+::selection {
+    background: var(--accent);
+    color: #000;
+}

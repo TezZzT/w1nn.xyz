@@ -1,0 +1,77 @@
+/* Theme Definitions */
+:root {
+    --theme-green: #00ff9d;
+    --theme-red: #ff3333;
+    --theme-purple: #bd00ff;
+
+    /* Default is Green */
+    --accent: var(--theme-green);
+}
+
+body.theme-red {
+    --accent: var(--theme-red);
+}
+
+body.theme-purple {
+    --accent: var(--theme-purple);
+}
+
+/* Theme Switcher UI */
+.theme-switcher {
+    position: fixed;
+    top: 20px;
+    right: 80px;
+    /* Left of HUD corner */
+    display: flex;
+    gap: 10px;
+    z-index: 9000;
+}
+
+.theme-btn {
+    width: 15px;
+    height: 15px;
+    border: 1px solid #555;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background: black;
+}
+
+.theme-btn:hover {
+    transform: scale(1.2);
+}
+
+.theme-btn.green {
+    background: var(--theme-green);
+    box-shadow: 0 0 5px var(--theme-green);
+}
+
+.theme-btn.red {
+    background: var(--theme-red);
+    box-shadow: 0 0 5px var(--theme-red);
+}
+
+.theme-btn.purple {
+    background: var(--theme-purple);
+    box-shadow: 0 0 5px var(--theme-purple);
+}
+
+/* Root Mode Unlock Styles */
+.root-unlocked {
+    animation: rootShake 0.5s ease-in-out;
+}
+
+@keyframes rootShake {
+
+    0%,
+    100% {
+        transform: translateX(0);
+    }
+
+    25% {
+        transform: translateX(-5px);
+    }
+
+    75% {
+        transform: translateX(5px);
+    }
+}
