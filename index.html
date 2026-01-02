@@ -1,277 +1,709 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TezZzT</title>
-
-<style>
-:root{
-  --neon:#00ff66;
-  --neon2:#00c2ff;
-  --bg:#000;
-  --mono:"Courier New", monospace;
-}
-
-*{box-sizing:border-box}
-body{
-  margin:0;
-  background:#000;
-  color:var(--neon);
-  font-family:var(--mono);
-  overflow-x:hidden;
-}
-
-/* MATRIX */
-canvas{
-  position:fixed;
-  inset:0;
-  z-index:0;
-  opacity:.32;
-}
-
-/* MAIN CARD */
-.main{
-  position:relative;
-  z-index:2;
-  max-width:980px;
-  margin:7vh auto;
-  padding:3rem;
-  background:rgba(0,0,0,.65);
-  border:1px solid rgba(0,255,102,.22);
-  border-radius:16px;
-  backdrop-filter:blur(6px);
-  box-shadow:0 0 45px rgba(0,255,102,.18);
-}
-
-/* HEADER */
-.name{
-  text-align:center;
-  font-size:clamp(3rem,7vw,4.4rem);
-  letter-spacing:.22em;
-  margin:0;
-  text-shadow:0 0 18px rgba(0,255,102,.85);
-}
-
-.subtitle{
-  text-align:center;
-  margin-top:.6rem;
-  font-size:1rem;
-  color:var(--neon2);
-}
-
-/* TYPE */
-.type{
-  text-align:center;
-  margin:2rem 0 3rem;
-  font-size:1.05rem;
-}
-.cursor{
-  display:inline-block;
-  width:.6ch;
-  background:var(--neon);
-  animation:blink .8s infinite;
-}
-@keyframes blink{50%{opacity:0}}
-
-/* SECTIONS */
-section{
-  margin-top:3rem;
-}
-h2{
-  color:var(--neon2);
-  font-size:1.35rem;
-  margin-bottom:.6rem;
-}
-p,li{
-  line-height:1.75;
-  font-size:.96rem;
-  color:rgba(0,255,102,.92);
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:1.1rem;
-}
-
-.box{
-  padding:1.2rem;
-  border:1px solid rgba(0,255,102,.22);
-  border-radius:12px;
-  transition:.25s;
-}
-.box:hover{
-  transform:translateY(-4px);
-  box-shadow:0 0 22px rgba(0,255,102,.35);
-}
-
-.box span{
-  color:var(--neon2);
-  font-size:.85rem;
-}
-
-/* TAGS */
-.tags{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.6rem;
-}
-.tag{
-  padding:.35rem .7rem;
-  border:1px solid rgba(0,255,102,.25);
-  border-radius:999px;
-  font-size:.78rem;
-}
-
-/* FOOTER */
-.footer{
-  margin-top:3.5rem;
-  text-align:center;
-  font-size:.8rem;
-  color:rgba(0,255,102,.6);
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TezzzT · Security Researcher</title>
+  <style>
+    :root{
+      --bg:#0b0b0d;
+      --bg-2:#111114;
+      --card:#1a1a1e;
+      --text:#e7e7e7;
+      --muted:#a1a1aa;
+      --line:rgba(255,255,255,.06);
+      --accent:#00ff88;
+      --accent-dim:#00ff8833;
+    }
+    
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:"JetBrains Mono","Courier New",monospace;
+    }
+    
+    body{
+      background:
+        radial-gradient(circle at 20% 20%, #1a1a1f 0%, transparent 45%),
+        radial-gradient(circle at 80% 80%, #1a1a1f 0%, transparent 45%),
+        linear-gradient(180deg,var(--bg),var(--bg-2));
+      color:var(--text);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+    
+    /* Matrix effect background */
+    #matrix-canvas{
+      position:fixed;
+      top:0;
+      left:0;
+      width:100%;
+      height:100%;
+      opacity:0.15;
+      z-index:0;
+      pointer-events:none;
+    }
+    
+    /* Grain */
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+      pointer-events:none;
+      z-index:1;
+    }
+    
+    .container{
+      max-width:1200px;
+      margin:auto;
+      padding:80px 22px;
+      position:relative;
+      z-index:2;
+    }
+    
+    /* Glitch effect */
+    @keyframes glitch{
+      0%,100%{transform:translate(0)}
+      20%{transform:translate(-2px,2px)}
+      40%{transform:translate(-2px,-2px)}
+      60%{transform:translate(2px,2px)}
+      80%{transform:translate(2px,-2px)}
+    }
+    
+    /* HERO */
+    .hero{
+      margin-bottom:110px;
+      position:relative;
+    }
+    
+    .name{
+      font-size:4.5rem;
+      font-weight:800;
+      letter-spacing:8px;
+      position:relative;
+      display:inline-block;
+    }
+    
+    .name:hover{
+      animation:glitch 0.3s infinite;
+    }
+    
+    .name span{
+      color:var(--accent);
+      text-shadow:0 0 20px var(--accent);
+    }
+    
+    .typing{
+      margin-top:24px;
+      color:var(--muted);
+      font-size:1.15rem;
+      height:30px;
+    }
+    
+    .cursor{
+      animation:blink 1s infinite;
+      color:var(--accent);
+    }
+    
+    @keyframes blink{
+      50%{opacity:0}
+    }
+    
+    /* Interactive Terminal */
+    .terminal{
+      max-width:720px;
+      margin-bottom:90px;
+      transition:transform 0.3s;
+    }
+    
+    .terminal:hover{
+      transform:scale(1.02);
+    }
+    
+    .terminal-header{
+      display:flex;
+      gap:8px;
+      padding:12px;
+      background:#111;
+      border-radius:12px 12px 0 0;
+      align-items:center;
+    }
+    
+    .terminal-header span{
+      width:12px;
+      height:12px;
+      border-radius:50%;
+      cursor:pointer;
+      transition:all 0.2s;
+    }
+    
+    .terminal-header span:nth-child(1){background:#ff5f56;}
+    .terminal-header span:nth-child(2){background:#ffbd2e;}
+    .terminal-header span:nth-child(3){background:#27c93f;}
+    
+    .terminal-header span:hover{
+      transform:scale(1.2);
+      box-shadow:0 0 10px currentColor;
+    }
+    
+    .terminal-body{
+      background:#0e0e11;
+      padding:22px;
+      border-radius:0 0 12px 12px;
+      color:#cfcfcf;
+      font-size:.9rem;
+      line-height:1.8;
+      position:relative;
+      overflow:hidden;
+    }
+    
+    .command-line{
+      opacity:0;
+      transform:translateX(-20px);
+      animation:slideIn 0.5s forwards;
+    }
+    
+    .command-line:nth-child(1){animation-delay:0.1s;}
+    .command-line:nth-child(2){animation-delay:0.3s;}
+    .command-line:nth-child(3){animation-delay:0.5s;}
+    .command-line:nth-child(4){animation-delay:0.7s;}
+    .command-line:nth-child(5){animation-delay:0.9s;}
+    .command-line:nth-child(6){animation-delay:1.1s;}
+    .command-line:nth-child(7){animation-delay:1.3s;}
+    .command-line:nth-child(8){animation-delay:1.5s;}
+    
+    @keyframes slideIn{
+      to{opacity:1;transform:translateX(0);}
+    }
+    
+    .prompt{color:var(--accent);}
+    
+    /* SECTIONS */
+    section{
+      margin-bottom:90px;
+      opacity:0;
+      transform:translateY(45px);
+      transition:all .8s cubic-bezier(.2,.7,.2,1);
+    }
+    
+    section.visible{
+      opacity:1;
+      transform:none;
+    }
+    
+    .card{
+      background:linear-gradient(180deg,#1b1b20,#151519);
+      border-radius:22px;
+      padding:40px;
+      border:1px solid var(--line);
+      box-shadow:0 35px 70px rgba(0,0,0,.7);
+      position:relative;
+      overflow:hidden;
+      transition:all 0.3s;
+    }
+    
+    .card::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:-100%;
+      width:100%;
+      height:100%;
+      background:linear-gradient(90deg,transparent,var(--accent-dim),transparent);
+      transition:left 0.5s;
+    }
+    
+    .card:hover::before{
+      left:100%;
+    }
+    
+    .card:hover{
+      border-color:var(--accent);
+      box-shadow:0 0 40px var(--accent-dim);
+    }
+    
+    .card h2{
+      font-size:1.8rem;
+      margin-bottom:22px;
+      position:relative;
+    }
+    
+    .card h2::before{
+      content:"# ";
+      color:var(--accent);
+    }
+    
+    .card p{
+      color:var(--muted);
+      line-height:1.8;
+    }
+    
+    /* GRID */
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:26px;
+    }
+    
+    .item{
+      background:#101013;
+      border-radius:18px;
+      padding:26px;
+      border:1px solid var(--line);
+      transition:all .35s;
+      cursor:pointer;
+      position:relative;
+      overflow:hidden;
+    }
+    
+    .item::after{
+      content:">";
+      position:absolute;
+      right:20px;
+      top:50%;
+      transform:translateY(-50%);
+      color:var(--accent);
+      opacity:0;
+      transition:all 0.3s;
+    }
+    
+    .item:hover{
+      transform:translateY(-10px) translateX(5px);
+      border-color:var(--accent);
+      box-shadow:0 10px 30px var(--accent-dim);
+    }
+    
+    .item:hover::after{
+      opacity:1;
+      right:15px;
+    }
+    
+    .item h3{
+      color:var(--accent);
+      margin-bottom:8px;
+      font-size:1.1rem;
+    }
+    
+    .item span{
+      color:var(--muted);
+      font-size:0.85rem;
+    }
+    
+    /* Binary rain effect */
+    .binary-rain{
+      position:absolute;
+      top:0;
+      right:20px;
+      font-size:0.7rem;
+      color:var(--accent);
+      opacity:0.3;
+      animation:rain 3s linear infinite;
+    }
+    
+    @keyframes rain{
+      0%{transform:translateY(-20px);opacity:0;}
+      10%{opacity:0.3;}
+      90%{opacity:0.3;}
+      100%{transform:translateY(100px);opacity:0;}
+    }
+    
+    /* TAGS */
+    .tags{
+      margin-top:22px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:12px;
+    }
+    
+    .tag{
+      padding:7px 14px;
+      border-radius:999px;
+      font-size:.82rem;
+      border:1px solid var(--line);
+      color:var(--muted);
+      transition:all 0.3s;
+      cursor:pointer;
+    }
+    
+    .tag:hover{
+      border-color:var(--accent);
+      color:var(--accent);
+      transform:scale(1.05);
+      box-shadow:0 0 15px var(--accent-dim);
+    }
+    
+    /* ACTIONS */
+    .actions{
+      margin-top:30px;
+      display:flex;
+      gap:15px;
+    }
+    
+    .btn{
+      padding:13px 28px;
+      border-radius:16px;
+      border:1px solid var(--accent);
+      color:var(--text);
+      text-decoration:none;
+      transition:all .25s;
+      position:relative;
+      overflow:hidden;
+      cursor:pointer;
+    }
+    
+    .btn::before{
+      content:"";
+      position:absolute;
+      top:50%;
+      left:50%;
+      width:0;
+      height:0;
+      border-radius:50%;
+      background:var(--accent);
+      transform:translate(-50%,-50%);
+      transition:width 0.4s,height 0.4s;
+    }
+    
+    .btn:hover::before{
+      width:300px;
+      height:300px;
+    }
+    
+    .btn span{
+      position:relative;
+      z-index:1;
+    }
+    
+    .btn:hover{
+      color:#000;
+      border-color:var(--accent);
+    }
+    
+    /* Status indicator */
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:10px;
+      margin-top:20px;
+      padding:10px 20px;
+      background:var(--card);
+      border-radius:30px;
+      border:1px solid var(--line);
+    }
+    
+    .status-dot{
+      width:10px;
+      height:10px;
+      background:var(--accent);
+      border-radius:50%;
+      animation:pulse 2s infinite;
+    }
+    
+    @keyframes pulse{
+      0%,100%{box-shadow:0 0 0 0 var(--accent);}
+      50%{box-shadow:0 0 0 8px transparent;}
+    }
+    
+    /* FOOTER */
+    footer{
+      margin-top:140px;
+      color:var(--muted);
+      font-size:.9rem;
+      text-align:center;
+      padding:20px;
+      border-top:1px solid var(--line);
+    }
+    
+    /* Skill bars */
+    .skill-bar{
+      margin:15px 0;
+      position:relative;
+    }
+    
+    .skill-name{
+      margin-bottom:8px;
+      color:var(--accent);
+    }
+    
+    .bar-container{
+      background:var(--card);
+      height:8px;
+      border-radius:10px;
+      overflow:hidden;
+      position:relative;
+    }
+    
+    .bar-fill{
+      height:100%;
+      background:linear-gradient(90deg,var(--accent),#00ff88aa);
+      border-radius:10px;
+      transition:width 1s ease;
+      box-shadow:0 0 10px var(--accent);
+    }
+    
+    /* RESPONSIVE */
+    @media(max-width:640px){
+      .name{font-size:3.3rem;}
+      .actions{flex-direction:column;}
+    }
+  </style>
 </head>
-
 <body>
 
-<canvas id="matrix"></canvas>
+<canvas id="matrix-canvas"></canvas>
 
-<div class="main">
+<div class="container">
 
-<h1 class="name">TezZzT</h1>
-<div class="subtitle">security researcher · reverse engineer · exploit dev</div>
+  <!-- HERO -->
+  <header class="hero">
+    <div class="name">TEZZ<span>ZT</span></div>
+    <div class="typing">
+      <span id="typed"></span><span class="cursor">_</span>
+    </div>
+    <div class="status">
+      <span class="status-dot"></span>
+      <span>Active · Ready to engage</span>
+    </div>
+  </header>
 
-<div class="type">
-  <span id="typed"></span><span class="cursor"></span>
-</div>
+  <!-- TERMINAL -->
+  <section class="terminal reveal">
+    <div class="terminal-header">
+      <span></span><span></span><span></span>
+    </div>
+    <div class="terminal-body">
+      <div class="command-line"><span class="prompt">root@tezzzt:~$</span> whoami</div>
+      <div class="command-line">tezzzT</div>
+      <div class="command-line"><span class="prompt">root@tezzzt:~$</span> cat skills.txt</div>
+      <div class="command-line">→ reverse_engineering</div>
+      <div class="command-line">→ security_research</div>
+      <div class="command-line">→ low_level_development</div>
+      <div class="command-line"><span class="prompt">root@tezzzt:~$</span> status --mode</div>
+      <div class="command-line"><span style="color:var(--accent)">● FOCUSED · PRECISE · CONTROLLED</span></div>
+    </div>
+  </section>
 
-<section>
-<h2>› Perfil</h2>
-<p>
-Security researcher especializado en <b>reverse engineering</b>,
-<b>exploit development</b> y análisis profundo de software.
-Experiencia real en <b>Bug Bounty</b>, automatización de ataques y
-desarrollo de herramientas ofensivas en entornos controlados.
-</p>
-</section>
+  <!-- PROFILE -->
+  <section class="reveal">
+    <div class="card">
+      <h2>Perfil</h2>
+      <p>
+        Security researcher y desarrollador orientado a bajo nivel.
+        Especializado en ingeniería inversa, análisis binario,
+        exploits y desarrollo de herramientas propias. Pasión por
+        descubrir vulnerabilidades y crear soluciones técnicas avanzadas.
+      </p>
 
-<section>
-<h2>› Tecnologías & Skills</h2>
-<div class="tags">
-  <div class="tag">C / C++</div>
-  <div class="tag">Python</div>
-  <div class="tag">Java</div>
-  <div class="tag">JavaScript</div>
-  <div class="tag">Windows Internals</div>
-  <div class="tag">Linux / Kali</div>
-  <div class="tag">IDA</div>
-  <div class="tag">Ghidra</div>
-  <div class="tag">Networking</div>
-  <div class="tag">SQL Injection</div>
-  <div class="tag">Web Exploitation</div>
-</div>
-</section>
+      <div class="tags">
+        <span class="tag">Linux / Kali</span>
+        <span class="tag">Reverse Engineering</span>
+        <span class="tag">Security Research</span>
+        <span class="tag">Low-Level</span>
+        <span class="tag">Exploit Development</span>
+        <span class="tag">Binary Analysis</span>
+      </div>
+    </div>
+  </section>
 
-<section>
-<h2>› Proyectos Destacados</h2>
-<div class="grid">
-  <div class="box">
-    <b>Minecraft Client Mods</b><br>
-    <span>Fabric · Exploits · Tracking · Ofuscación</span>
-  </div>
-  <div class="box">
-    <b>Internal Cheats (CS / CS2)</b><br>
-    <span>C++ · MinHook · Memory · Aimbot</span>
-  </div>
-  <div class="box">
-    <b>Security Tools</b><br>
-    <span>PoCs · Scanners · Automation</span>
-  </div>
-  <div class="box">
-    <b>Bug Bounty Research</b><br>
-    <span>HackerOne · CVEs · Exploit Analysis</span>
-  </div>
-</div>
-</section>
+  <!-- SKILLS WITH BARS -->
+  <section class="reveal">
+    <div class="card">
+      <h2>Nivel de Experiencia</h2>
+      <div class="skill-bar">
+        <div class="skill-name">Reverse Engineering</div>
+        <div class="bar-container">
+          <div class="bar-fill" style="width:0" data-width="95"></div>
+        </div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-name">Security Research</div>
+        <div class="bar-container">
+          <div class="bar-fill" style="width:0" data-width="90"></div>
+        </div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-name">C / C++ Development</div>
+        <div class="bar-container">
+          <div class="bar-fill" style="width:0" data-width="88"></div>
+        </div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-name">Linux / Pentesting</div>
+        <div class="bar-container">
+          <div class="bar-fill" style="width:0" data-width="92"></div>
+        </div>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-name">Binary Analysis</div>
+        <div class="bar-container">
+          <div class="bar-fill" style="width:0" data-width="87"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section>
-<h2>› Entorno</h2>
-<ul>
-<li>Kali Linux / Windows</li>
-<li>Testing legal y entornos controlados</li>
-<li>Investigación y desarrollo ofensivo</li>
-</ul>
-</section>
+  <!-- SKILLS GRID -->
+  <section class="reveal">
+    <div class="card">
+      <h2>Especialidades</h2>
+      <div class="grid">
+        <div class="item">
+          <h3>Reverse Engineering</h3>
+          <span>IDA · Análisis binario · Memory flow · Decompiling</span>
+          <div class="binary-rain">01101100</div>
+        </div>
+        <div class="item">
+          <h3>Security Research</h3>
+          <span>CVEs · Bug Bounty · PoC exploits · Vulnerability analysis</span>
+          <div class="binary-rain" style="animation-delay:0.5s">11001010</div>
+        </div>
+        <div class="item">
+          <h3>C / C++</h3>
+          <span>Low-level · Injections · Hooks · System programming</span>
+          <div class="binary-rain" style="animation-delay:1s">10110011</div>
+        </div>
+        <div class="item">
+          <h3>Java / Fabric</h3>
+          <span>Minecraft mods & clients · Advanced implementations</span>
+          <div class="binary-rain" style="animation-delay:1.5s">01011100</div>
+        </div>
+        <div class="item">
+          <h3>Linux / Kali</h3>
+          <span>Pentesting · Custom tooling · Automation</span>
+          <div class="binary-rain" style="animation-delay:2s">11100101</div>
+        </div>
+        <div class="item">
+          <h3>Game Hacking</h3>
+          <span>Internal cheats · MinHook · Memory manipulation</span>
+          <div class="binary-rain" style="animation-delay:2.5s">00111010</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section>
-<h2>› Contacto</h2>
-<ul>
-<li>Discord: <b>t3zzt</b></li>
-<li>GitHub: <b>github.com/TezZzT</b></li>
-</ul>
-</section>
+  <!-- PROJECTS -->
+  <section class="reveal">
+    <div class="card">
+      <h2>Proyectos</h2>
+      <p>
+        Herramientas de seguridad personalizadas, clientes avanzados,
+        automatización de análisis y software especializado para
+        investigación y desarrollo de exploits.
+      </p>
 
-<div class="footer">
-session active · <span id="time"></span>
-</div>
+      <div class="actions">
+        <a class="btn" href="https://github.com/TezzzT" target="_blank">
+          <span>→ GitHub</span>
+        </a>
+        <a class="btn" href="#" onclick="alert('Coming soon: Portfolio showcase'); return false;">
+          <span>→ Portfolio</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    © 2026 · TezzzT — engineered, not improvised<br>
+    <small style="opacity:0.5">[ Security Researcher · Reverse Engineer · Low-Level Developer ]</small>
+  </footer>
 
 </div>
 
 <script>
-/* TYPE */
-const lines=[
- "root@tez:~$ whoami",
- "security researcher",
- "reverse engineer",
- "exploit developer",
- "access granted"
-];
-let i=0,j=0,d=false;
-const el=document.getElementById("typed");
-(function type(){
- const l=lines[i];
- if(!d){
-  el.textContent=l.slice(0,++j);
-  if(j===l.length){d=true;setTimeout(type,1100);return;}
- }else{
-  el.textContent=l.slice(0,--j);
-  if(j===0){d=false;i=(i+1)%lines.length;}
- }
- setTimeout(type,d?20:45);
-})();
+// Matrix effect
+const canvas = document.getElementById('matrix-canvas');
+const ctx = canvas.getContext('2d');
 
-/* TIME */
-setInterval(()=>{
- document.getElementById("time").textContent=
-  new Date().toLocaleString("es-AR");
-},1000);
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-/* MATRIX */
-const c=document.getElementById("matrix"),ctx=c.getContext("2d");
-let w,h,f=16,drops;
-function resize(){
- w=c.width=innerWidth;
- h=c.height=innerHeight;
- drops=Array(Math.floor(w/f)).fill(1);
+const chars = '01';
+const fontSize = 14;
+const columns = canvas.width / fontSize;
+const drops = Array(Math.floor(columns)).fill(1);
+
+function drawMatrix() {
+  ctx.fillStyle = 'rgba(11, 11, 13, 0.05)';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  ctx.fillStyle = '#00ff88';
+  ctx.font = fontSize + 'px monospace';
+  
+  for (let i = 0; i < drops.length; i++) {
+    const text = chars[Math.floor(Math.random() * chars.length)];
+    ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+    
+    if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    drops[i]++;
+  }
 }
-resize();addEventListener("resize",resize);
-const chars="01アカサタナ<>$#";
-(function draw(){
- ctx.fillStyle="rgba(0,0,0,.12)";
- ctx.fillRect(0,0,w,h);
- ctx.fillStyle="rgba(0,255,120,.8)";
- ctx.font=f+"px monospace";
- drops.forEach((y,i)=>{
-  const t=chars[Math.random()*chars.length|0];
-  ctx.fillText(t,i*f,y*f);
-  if(y*f>h&&Math.random()>.97)drops[i]=0;
-  drops[i]++;
- });
- requestAnimationFrame(draw);
-})();
+
+setInterval(drawMatrix, 50);
+
+window.addEventListener('resize', () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+// Reveal on scroll
+const sections = document.querySelectorAll(".reveal");
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add("visible");
+      
+      // Animate skill bars when visible
+      const bars = e.target.querySelectorAll('.bar-fill');
+      bars.forEach(bar => {
+        const width = bar.getAttribute('data-width');
+        setTimeout(() => {
+          bar.style.width = width + '%';
+        }, 200);
+      });
+    }
+  });
+}, { threshold: 0.15 });
+
+sections.forEach(s => observer.observe(s));
+
+// Typing effect
+const lines = [
+  "Security Researcher",
+  "Reverse Engineering",
+  "Low-Level Developer",
+  "Exploit Development",
+  "Binary Analysis",
+  "Focused · Precise · Controlled"
+];
+
+let i = 0, j = 0, deleting = false;
+const speed = 70;
+const el = document.getElementById("typed");
+
+function type() {
+  const line = lines[i];
+  if (!deleting) {
+    el.textContent = line.slice(0, ++j);
+    if (j === line.length) {
+      deleting = true;
+      setTimeout(type, 1500);
+      return;
+    }
+  } else {
+    el.textContent = line.slice(0, --j);
+    if (j === 0) {
+      deleting = false;
+      i = (i + 1) % lines.length;
+    }
+  }
+  setTimeout(type, deleting ? speed / 2 : speed);
+}
+
+type();
 </script>
 
 </body>
