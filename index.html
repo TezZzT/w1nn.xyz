@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hacked By TezzzzT</title>
+  <style>
+    :root{
+      --neon: #00ff66;
+      --neon-2: #00c2ff;
+      --bg: #000;
+      --glass: rgba(255,255,255,0.03);
+      --mono: "Courier New", "Lucida Console", monospace;
+    }
+
+    /* Reset / layout */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      background:var(--bg);
+      font-family:var(--mono);
+      color:var(--neon);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+    }
+
+    /* Canvas for matrix rain */
+    #matrix {
+      position:fixed;
+      inset:0;
+      z-index:0;
+      filter: blur(0.2px) contrast(1.1);
+      opacity:0.45;
+    }
+
+    /* Center content card */
+    .card{
+      position:relative;
+      z-index:2;
+      padding:2.2rem 3rem;
+      border-radius:12px;
+      background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.35));
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6), 0 0 40px rgba(0,255,102,0.06) inset;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(0,255,102,0.06);
+      text-align:center;
+      max-width:900px;
+      width:88%;
+    }
+
+    /* Scanlines overlay */
+    .scanlines{
+      pointer-events:none;
+      position:absolute;
+      inset:0;
+      background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 100% 4px;
+      mix-blend-mode: overlay;
+      border-radius:12px;
+    }
+
+    /* Neon heading with glitch and shadow */
+    h1{
+      font-size:clamp(2rem, 6vw, 4.2rem);
+      line-height:1;
+      margin:0 0 0.6rem 0;
+      letter-spacing:0.06em;
+      position:relative;
+      color:var(--neon);
+      text-shadow:
+        0 0 6px rgba(0,255,102,0.6),
+        0 0 18px rgba(0,255,102,0.25),
+        0 6px 20px rgba(0,0,0,0.6);
+      display:inline-block;
+      padding:0 0.5rem;
+      background: linear-gradient(90deg, rgba(0,255,102,0.03), rgba(0,194,255,0.03));
+      border-radius:6px;
+      box-decoration-break: clone;
+      -webkit-box-decoration-break: clone;
+    }
+
+    /* Glitch copies */
+    .glitch{
+      position:relative;
+      display:inline-block;
+    }
+    .glitch::before,
+    .glitch::after{
+      content:attr(data-text);
+      position:absolute;
+      left:0;
+      top:0;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      clip-path: inset(0 0 0 0);
+      opacity:0.8;
+      pointer-events:none;
+    }
+    .glitch::before{
+      transform: translateX(-2px);
+      color:var(--neon-2);
+      mix-blend-mode: screen;
+      animation: glitch1 2.8s infinite linear;
+    }
+    .glitch::after{
+      transform: translateX(2px);
+      color:var(--neon);
+      mix-blend-mode: multiply;
+      animation: glitch2 3.4s infinite linear;
+    }
+
+    @keyframes glitch1{
+      0% { clip-path: inset(0 0 80% 0); transform:translate(-2px,-1px); opacity:0.9 }
+      10%{ clip-path: inset(20% 0 60% 0); transform:translate(-6px,2px); opacity:0.6 }
+      20%{ clip-path: inset(60% 0 10% 0); transform:translate(-1px,0); opacity:0.85 }
+      30%{ clip-path: inset(30% 0 50% 0); transform:translate(-10px,-2px); opacity:0.65 }
+      40%{ clip-path: inset(0 0 80% 0); transform:translate(-2px,1px); opacity:0.9 }
+      100%{ clip-path: inset(0 0 0 0); transform:translate(-2px,-1px); opacity:0.9 }
+    }
+    @keyframes glitch2{
+      0% { clip-path: inset(0 0 30% 0); transform:translate(2px,1px) }
+      12%{ clip-path: inset(40% 0 30% 0); transform:translate(6px,-3px) }
+      36%{ clip-path: inset(10% 0 60% 0); transform:translate(1px,0px) }
+      60%{ clip-path: inset(50% 0 10% 0); transform:translate(9px,2px) }
+      100%{ clip-path: inset(0 0 0 0); transform:translate(2px,1px) }
+    }
+
+    /* Typing line */
+    .type {
+      display:block;
+      font-size:clamp(0.9rem,2.3vw,1.1rem);
+      margin-top:0.45rem;
+      opacity:0.95;
+      white-space:nowrap;
+      overflow:hidden;
+    }
+    .cursor{
+      display:inline-block;
+      width:0.7ch;
+      background:var(--neon);
+      margin-left:0.25ch;
+      animation: blink 0.8s steps(1) infinite;
+      vertical-align:middle;
+      height:1.12em;
+    }
+    @keyframes blink{50%{opacity:0}}
+
+    /* Footer small text */
+    .meta{
+      margin-top:1rem;
+      font-size:0.82rem;
+      color: rgba(0,255,102,0.7);
+      opacity:0.9;
+    }
+
+    /* Responsive spacing */
+    @media (max-width:480px){
+      .card{padding:1.25rem 1.25rem}
+      .meta { font-size:0.75rem }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background canvas -->
+  <canvas id="matrix" aria-hidden="true"></canvas>
+
+  <!-- Content -->
+  <main class="card" role="main" aria-labelledby="main-title">
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <h1 id="main-title" class="glitch" data-text="Hacked By TezzzzT" aria-hidden="false">
+      Hacked By TezzzzT
+    </h1>
+
+    <div class="type" aria-live="polite">
+      <span id="typed-text" aria-hidden="false"></span><span class="cursor" aria-hidden="true"></span>
+    </div>
+
+    <div class="meta" aria-hidden="false">
+      Sistema infiltrado · <time id="now"></time>
+    </div>
+  </main>
+
+  <script>
+    /* --- Typing effect (texto cíclico) --- */
+    const lines = [
+      "Acceso: root@tezzzzt — session established",
+      "Permisos: escalados",
+      "Rutas: /usr/local/bin /etc/ — lectura completa",
+      "Estado: permanecer discreto. Operación completada."
+    ];
+    const typedEl = document.getElementById('typed-text');
+    let lineIndex = 0, charIndex = 0, deleting = false;
+
+    function typeLoop() {
+      const line = lines[lineIndex];
+      if (!deleting) {
+        typedEl.textContent = line.slice(0, ++charIndex);
+        if (charIndex === line.length) {
+          deleting = true;
+          setTimeout(typeLoop, 1100);
+        } else setTimeout(typeLoop, 45 + Math.random()*40);
+      } else {
+        typedEl.textContent = line.slice(0, --charIndex);
+        if (charIndex === 0) {
+          deleting = false;
+          lineIndex = (lineIndex + 1) % lines.length;
+          setTimeout(typeLoop, 300);
+        } else setTimeout(typeLoop, 18 + Math.random()*25);
+      }
+    }
+    typeLoop();
+
+    /* --- Matrix rain background --- */
+    const canvas = document.getElementById('matrix');
+    const ctx = canvas.getContext('2d');
+    let cols, rows, fontSize, drops;
+
+    function resizeCanvas(){
+      canvas.width = innerWidth;
+      canvas.height = innerHeight;
+      fontSize = Math.max(12, Math.min(20, Math.floor(innerWidth / 80)));
+      cols = Math.floor(canvas.width / fontSize);
+      rows = Math.floor(canvas.height / fontSize);
+      drops = new Array(cols).fill(1).map(_ => Math.floor(Math.random() * rows));
+    }
+    window.addEventListener('resize', resizeCanvas, {passive:true});
+    resizeCanvas();
+
+    const chars = "01あウ力乙∑Ψλ<>!@#$%&*()-_=+[]{};:,.?/~¥";
+    function draw(){
+      ctx.fillStyle = "rgba(0,0,0,0.12)";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+
+      ctx.font = fontSize + "px " + getComputedStyle(document.documentElement).getPropertyValue('--mono').replace(/"/g,'').trim();
+      for(let i=0;i<cols;i++){
+        const text = chars.charAt(Math.floor(Math.random()*chars.length));
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
+
+        ctx.fillStyle = "rgba(0,255,150," + (Math.random()*0.6 + 0.2) + ")";
+        ctx.fillText(text, x, y);
+
+        if(y > canvas.height && Math.random() > 0.975) drops[i] = 0;
+        drops[i]++;
+      }
+
+      requestAnimationFrame(draw);
+    }
+    requestAnimationFrame(draw);
+
+    /* --- Insert current time in footer --- */
+    function updateTime(){
+      const now = new Date();
+      const iso = now.toLocaleString('es-AR', {year:'numeric',month:'short',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      document.getElementById('now').textContent = iso;
+    }
+    updateTime();
+    setInterval(updateTime,1000);
+
+    /* Optional: allow Esc to stop animations for accessibility */
+    window.addEventListener('keydown', (e)=>{
+      if(e.key === 'Escape'){
+        // stop animations: clear canvas and stop typing
+        cancelAnimationFrame(draw);
+        canvas.style.display = 'none';
+        typedEl.textContent = 'Modo estático (animaciones pausadas)';
+      }
+    });
+  </script>
+</body>
+</html>
