@@ -1,0 +1,30 @@
+/* Hex Sidebar */
+.hex-sidebar {
+    position: fixed;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 150px;
+    height: 400px;
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    z-index: -1;
+    opacity: 0.3;
+    pointer-events: none;
+    display: none;
+    /* Mobile hidden */
+}
+
+@media (min-width: 1200px) {
+    .hex-sidebar {
+        display: block;
+    }
+}
+
+.hex-row {
+    margin-bottom: 2px;
+    white-space: nowrap;
+}
+
+/* End of Decorative Styles */

@@ -1,0 +1,28 @@
+/* Skills Layout */
+.skills-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .skills-layout {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.radar-container {
+    min-height: 300px;
+    position: relative;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Adjust card titles for space */
+.project-card h3 {
+    font-size: 0.9rem;
+}
