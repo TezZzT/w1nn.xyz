@@ -178,7 +178,7 @@ class FileSystem {
             'about.txt': "I am a Security Researcher focused on low-level development and reverse engineering.",
             'skills.md': "Key Skills:\n- C/C++\n- Assembly\n- Python\n- Reverse Engineering (IDA/Ghidra)\n- Malware Analysis",
             'projects.json': "[\n  { name: 'SnakeC2', type: 'C2 Server' },\n  { name: 'VulnScan', type: 'Scanner' }\n]",
-            'contact.info': "GitHub: github.com/TezzzT\nEmail: root@tezzzt.io",
+            'contact.info': "GitHub: github.com/TezzzT\nDsicord: t3zzt",
             'secret.bin': "PERMISSION DENIED: Encrypted content."
         };
     }
