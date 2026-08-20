@@ -675,53 +675,38 @@ html,body{
 .conn{
   width:100%;
   max-width:340px;
-
   background:var(--panel);
-
   border:1px solid var(--panel-border);
-
   backdrop-filter:blur(10px);
-
-  border-radius:12px;
-
-  padding:14px 16px;
-
+  border-radius:14px;
+  padding:16px;
   display:flex;
-  align-items:center;
-  gap:12px;
-
+  flex-direction:column;
+  gap:0;
   position:relative;
   overflow:hidden;
-
-  transition:
-    border-color .25s ease,
-    transform .25s ease;
+  transition:border-color .25s ease, transform .25s ease;
 }
 
 .conn::before{
   content:"";
-
   position:absolute;
-  top:0;
-  left:0;
-  right:0;
-
+  top:0; left:0; right:0;
   height:2px;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      var(--accent),
-      transparent
-    );
-
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
   opacity:.7;
 }
 
 .conn:hover{
   border-color:rgba(255,31,61,.35);
   transform:translateY(-2px);
+}
+
+/* Profile row */
+.conn-profile-row{
+  display:flex;
+  align-items:center;
+  gap:12px;
 }
 
 .conn-avatar-wrap{
@@ -732,17 +717,11 @@ html,body{
 }
 
 .conn-avatar{
-  width:46px;
-  height:46px;
-
+  width:46px; height:46px;
   border-radius:50%;
-
   background:#151010;
-
   border:1px solid rgba(255,255,255,.1);
-
   object-fit:cover;
-
   display:block;
 }
 
@@ -773,8 +752,7 @@ html,body{
 }
 
 .conn-badge{
-  width:16px;
-  height:16px;
+  width:16px; height:16px;
   border-radius:3px;
   display:inline-flex;
   align-items:center;
@@ -790,47 +768,221 @@ html,body{
 }
 
 .conn-badge img{
-  width:14px;
-  height:14px;
+  width:14px; height:14px;
   display:block;
 }
 
 .conn-status{
   font-size:12px;
   color:var(--muted);
-
   margin-top:3px;
-
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
 }
 
-.conn-activity{
+/* Custom status */
+.conn-custom-status{
   font-size:11px;
   color:#d6bebe;
+  padding:0;
+  margin:0;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.conn-custom-status:empty{
+  display:none;
+}
+.conn-custom-status:not(:empty){
+  margin-top:10px;
+  padding-top:10px;
+  border-top:1px solid rgba(255,255,255,.06);
+}
 
-  margin-top:3px;
+/* Activity Panels */
+.activity-panel{
+  margin-top:12px;
+  padding:12px;
+  border-radius:10px;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.05);
+  animation:activitySlideIn .4s cubic-bezier(.2,.8,.2,1) forwards;
+}
 
+@keyframes activitySlideIn{
+  from{ opacity:0; transform:translateY(8px); }
+  to{ opacity:1; transform:translateY(0); }
+}
+
+.activity-panel-header{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  margin-bottom:10px;
+}
+
+.activity-type-icon{
+  width:14px; height:14px;
+  flex-shrink:0;
+}
+
+.spotify-green{ color:#1db954; }
+.game-blue{ color:#5865f2; }
+
+.activity-panel-label{
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  color:var(--muted);
+}
+
+/* Spotify equalizer animation */
+.spotify-eq{
+  display:flex;
+  align-items:flex-end;
+  gap:2px;
+  height:12px;
+  margin-left:auto;
+}
+
+.spotify-eq span{
+  display:block;
+  width:3px;
+  background:#1db954;
+  border-radius:1px;
+  animation:eqBounce 1.2s ease-in-out infinite;
+}
+
+.spotify-eq span:nth-child(1){
+  height:4px;
+  animation-delay:0s;
+}
+.spotify-eq span:nth-child(2){
+  height:8px;
+  animation-delay:.2s;
+}
+.spotify-eq span:nth-child(3){
+  height:5px;
+  animation-delay:.4s;
+}
+
+@keyframes eqBounce{
+  0%,100%{ height:4px; }
+  50%{ height:12px; }
+}
+
+/* Activity body */
+.activity-panel-body{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.activity-art{
+  width:52px; height:52px;
+  border-radius:6px;
+  object-fit:cover;
+  flex-shrink:0;
+  background:#1a1010;
+  box-shadow:0 4px 12px rgba(0,0,0,.4);
+}
+
+.activity-art-game{
+  border-radius:8px;
+}
+
+.activity-art[src=""]{
+  display:none;
+}
+
+.activity-details{
+  flex:1;
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+}
+
+a.activity-title,
+div.activity-title{
+  font-size:13px;
+  font-weight:700;
+  color:var(--text);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  text-decoration:none;
+  transition:color .2s;
+}
+
+a.activity-title:hover{
+  color:var(--accent);
+  text-decoration:underline;
+}
+
+.activity-sub{
+  font-size:11px;
+  color:var(--muted);
   white-space:nowrap;
   overflow:hidden;
   text-overflow:ellipsis;
 }
 
+.activity-album-name{
+  font-style:italic;
+  opacity:.7;
+}
+
+.activity-elapsed{
+  font-size:10px;
+  color:var(--muted);
+  font-family:'JetBrains Mono',monospace;
+  margin-top:2px;
+  opacity:.8;
+}
+
+/* Spotify progress bar */
+.activity-progress{
+  margin-top:10px;
+}
+
+.activity-progress-track{
+  width:100%;
+  height:3px;
+  background:rgba(255,255,255,.08);
+  border-radius:3px;
+  overflow:hidden;
+}
+
+.activity-progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#1db954,#1ed760);
+  border-radius:3px;
+  transition:width 1s linear;
+}
+
+.activity-progress-times{
+  display:flex;
+  justify-content:space-between;
+  margin-top:4px;
+  font-size:9px;
+  font-family:'JetBrains Mono',monospace;
+  color:var(--muted);
+  opacity:.7;
+}
+
+/* Status dot */
 .status-dot{
   position:absolute;
-  bottom:0;
-  right:0;
-  width:12px;
-  height:12px;
-
+  bottom:0; right:0;
+  width:12px; height:12px;
   border-radius:50%;
-
   background:#777;
   border:2px solid rgba(10,5,5,.9);
-
   flex-shrink:0;
-
   transition:.2s;
 }
 
@@ -1181,56 +1333,88 @@ html,body{
 
     <div class="conn">
 
-      <div class="conn-avatar-wrap">
-        <img
-          id="discordAvatar"
-          class="conn-avatar"
-          src=""
-          alt="Discord"
-        >
-        <div
-          class="status-dot"
-          id="statusDot"
-          title="Discord"
-        ></div>
+      <!-- Perfil row -->
+      <div class="conn-profile-row">
+        <div class="conn-avatar-wrap">
+          <img
+            id="discordAvatar"
+            class="conn-avatar"
+            src=""
+            alt="Discord"
+          >
+          <div
+            class="status-dot"
+            id="statusDot"
+            title="Discord"
+          ></div>
+        </div>
+
+        <div class="conn-info">
+          <div class="conn-name-row">
+            <div class="conn-name" id="discordName">Tez4</div>
+            <div class="conn-badges" id="discordBadges">
+              <span class="conn-badge conn-badge-img" title="Clan">
+                <img
+                  src="https://cdn.discordapp.com/clan-badges/1525131210387620062/8b5c47f099b3b1b174d2cb0217c3f5f9.png?size=16"
+                  alt="Clan" width="14" height="14"
+                >
+              </span>
+            </div>
+          </div>
+          <div class="conn-status" id="discordStatus">Cargando Discord...</div>
+        </div>
       </div>
 
-      <div class="conn-info">
+      <!-- Custom status text -->
+      <div class="conn-custom-status" id="discordCustomStatus"></div>
 
-        <div class="conn-name-row">
-          <div
-            class="conn-name"
-            id="discordName"
-          >
-            Tez4
-          </div>
-          <div
-            class="conn-badges"
-            id="discordBadges"
-          >
-            <span class="conn-badge conn-badge-img" title="Clan">
-              <img
-                src="https://cdn.discordapp.com/clan-badges/1525131210387620062/8b5c47f099b3b1b174d2cb0217c3f5f9.png?size=16"
-                alt="Clan"
-                width="14"
-                height="14"
-              >
-            </span>
+      <!-- Spotify Activity Panel -->
+      <div class="activity-panel activity-spotify" id="spotifyPanel" style="display:none;">
+        <div class="activity-panel-header">
+          <svg class="activity-type-icon spotify-green" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+          </svg>
+          <span class="activity-panel-label">Escuchando Spotify</span>
+          <div class="spotify-eq">
+            <span></span><span></span><span></span>
           </div>
         </div>
-
-        <div
-          class="conn-status"
-          id="discordStatus"
-        >
-          Cargando Discord...
+        <div class="activity-panel-body">
+          <img class="activity-art" id="spotifyArt" src="" alt="Album">
+          <div class="activity-details">
+            <a class="activity-title" id="spotifySong" href="#" target="_blank" rel="noopener">—</a>
+            <div class="activity-sub" id="spotifyArtist">—</div>
+            <div class="activity-sub activity-album-name" id="spotifyAlbum">—</div>
+          </div>
         </div>
+        <div class="activity-progress" id="spotifyProgress">
+          <div class="activity-progress-track">
+            <div class="activity-progress-fill" id="spotifyProgressFill"></div>
+          </div>
+          <div class="activity-progress-times">
+            <span id="spotifyTimeElapsed">0:00</span>
+            <span id="spotifyTimeTotal">0:00</span>
+          </div>
+        </div>
+      </div>
 
-        <div
-          class="conn-activity"
-          id="discordActivity"
-        ></div>
-
+      <!-- Game / Other Activity Panel -->
+      <div class="activity-panel activity-game" id="gamePanel" style="display:none;">
+        <div class="activity-panel-header">
+          <svg class="activity-type-icon game-blue" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+            <path d="M21.58 16.09l-1.09-7.66C20.21 6.46 18.52 5 16.53 5H7.47C5.48 5 3.79 6.46 3.51 8.43l-1.09 7.66C2.2 17.63 3.39 19 4.94 19c.68 0 1.32-.27 1.8-.75L9 16h6l2.25 2.25c.48.48 1.13.75 1.8.75 1.56 0 2.75-1.37 2.53-2.91zM11 11H9v2H8v-2H6v-1h2V8h1v2h2v1zm4 2c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1zm2-3c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/>
+          </svg>
+          <span class="activity-panel-label" id="gameLabel">Jugando</span>
+        </div>
+        <div class="activity-panel-body">
+          <img class="activity-art activity-art-game" id="gameArt" src="" alt="Game">
+          <div class="activity-details">
+            <div class="activity-title" id="gameName">—</div>
+            <div class="activity-sub" id="gameDetails">—</div>
+            <div class="activity-sub" id="gameState"></div>
+            <div class="activity-elapsed" id="gameElapsed"></div>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -1559,11 +1743,6 @@ const discordStatus =
     "discordStatus"
   );
 
-const discordActivity =
-  document.getElementById(
-    "discordActivity"
-  );
-
 const statusDot =
   document.getElementById(
     "statusDot"
@@ -1751,100 +1930,175 @@ function renderBadges(user){
 
 
 function updateDiscord(data){
-
-  if(!data){
-    return;
-  }
-
+  if(!data) return;
 
   /* Nombre + avatar + insignias */
-
   if(data.discord_user){
-
     const user = data.discord_user;
-
-    discordName.textContent =
-      user.global_name ||
-      user.display_name ||
-      user.username ||
-      "Tez4";
-
+    discordName.textContent = user.global_name || user.display_name || user.username || "Tez4";
 
     if(user.avatar){
       const ext = user.avatar.startsWith("a_") ? "gif" : "png";
-      discordAvatar.src =
-        `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=128`;
+      discordAvatar.src = `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.${ext}?size=128`;
     }else{
       const idx = (BigInt(user.id) >> 22n) % 6n;
-      discordAvatar.src =
-        `https://cdn.discordapp.com/embed/avatars/${idx}.png`;
+      discordAvatar.src = `https://cdn.discordapp.com/embed/avatars/${idx}.png`;
     }
 
     renderBadges(user);
-
   }
 
-
-  /* Estado (solo texto útil; DND no muestra "No molestar") */
-
+  /* Estado */
   const status = data.discord_status || "offline";
-
-  const statusNames = {
-    online: "En línea",
-    idle: "Ausente",
-    dnd: "",
-    offline: "Desconectado"
-  };
-
-  discordStatus.textContent =
-    statusNames[status] ?? "Desconectado";
-
-
-  statusDot.classList.remove("online", "idle", "dnd", "offline");
+  const statusNames = { online:"En línea", idle:"Ausente", dnd:"", offline:"Desconectado" };
+  discordStatus.textContent = statusNames[status] ?? "Desconectado";
+  statusDot.classList.remove("online","idle","dnd","offline");
   statusDot.classList.add(status);
 
+  /* Actividades */
+  const activities = Array.isArray(data.activities) ? data.activities : [];
+  const custom = activities.find(a => a.type === 4);
+  const spotify = data.spotify || null;
+  const gameActivity = activities.find(a => a.type === 0); /* Playing */
 
-  /*
-    Actividad de Discord
-    Prioridad: juego / streaming / listening / watching, luego custom status real
-  */
+  /* Paneles */
+  const spotifyPanel = document.getElementById("spotifyPanel");
+  const gamePanel = document.getElementById("gamePanel");
+  const customStatusEl = document.getElementById("discordCustomStatus");
 
-  const activities =
-    Array.isArray(data.activities) ? data.activities : [];
-
-
-  const activity =
-    activities.find(item => item.type !== 4);
-
-  const custom =
-    activities.find(item => item.type === 4);
-
-
-  if(activity){
-
-    let text = activity.name || "";
-
-    if(activity.details){
-      text += " · " + activity.details;
-    }
-
-    if(activity.state){
-      text += " · " + activity.state;
-    }
-
-    discordActivity.textContent = text;
-
-  }else if(custom && custom.state){
-
-    /* Solo texto real del estado; no mostrar "Custom Status" */
-    discordActivity.textContent = custom.state;
-
+  /* Custom status */
+  if(custom && custom.state){
+    customStatusEl.textContent = custom.state;
   }else{
-
-    discordActivity.textContent = "";
-
+    customStatusEl.textContent = "";
   }
 
+  /* Spotify */
+  if(spotify){
+    spotifyPanel.style.display = "block";
+
+    const spotifyArt = document.getElementById("spotifyArt");
+    const spotifySong = document.getElementById("spotifySong");
+    const spotifyArtist = document.getElementById("spotifyArtist");
+    const spotifyAlbum = document.getElementById("spotifyAlbum");
+
+    spotifyArt.src = spotify.album_art_url || "";
+    spotifySong.textContent = spotify.song || "—";
+    spotifySong.href = spotify.track_id ? `https://open.spotify.com/track/${spotify.track_id}` : "#";
+    spotifyArtist.textContent = spotify.artist ? `por ${spotify.artist.replace(/;/g, ", ")}` : "—";
+    spotifyAlbum.textContent = spotify.album || "";
+
+    /* Progress bar */
+    updateSpotifyProgress(spotify);
+
+  }else{
+    spotifyPanel.style.display = "none";
+    if(window._spotifyInterval){
+      clearInterval(window._spotifyInterval);
+      window._spotifyInterval = null;
+    }
+  }
+
+  /* Game / other activity */
+  if(gameActivity){
+    gamePanel.style.display = "block";
+
+    const gameName = document.getElementById("gameName");
+    const gameDetails = document.getElementById("gameDetails");
+    const gameState = document.getElementById("gameState");
+    const gameElapsed = document.getElementById("gameElapsed");
+    const gameArt = document.getElementById("gameArt");
+    const gameLabel = document.getElementById("gameLabel");
+
+    gameName.textContent = gameActivity.name || "—";
+    gameDetails.textContent = gameActivity.details || "";
+    gameState.textContent = gameActivity.state || "";
+
+    /* Label */
+    gameLabel.textContent = "Jugando";
+
+    /* Game icon from assets */
+    if(gameActivity.assets && gameActivity.assets.large_image){
+      let imgUrl = gameActivity.assets.large_image;
+      if(imgUrl.startsWith("mp:external/")){
+        imgUrl = `https://media.discordapp.net/${imgUrl.replace("mp:", "")}`;
+      }else if(gameActivity.application_id){
+        imgUrl = `https://cdn.discordapp.com/app-assets/${gameActivity.application_id}/${imgUrl}.png`;
+      }
+      gameArt.src = imgUrl;
+      gameArt.style.display = "block";
+    }else{
+      gameArt.src = "";
+      gameArt.style.display = "none";
+    }
+
+    /* Elapsed time */
+    if(gameActivity.timestamps && gameActivity.timestamps.start){
+      const startMs = gameActivity.timestamps.start;
+      function updateElapsed(){
+        const elapsed = Date.now() - startMs;
+        const mins = Math.floor(elapsed / 60000);
+        const hrs = Math.floor(mins / 60);
+        if(hrs > 0){
+          gameElapsed.textContent = `${hrs}h ${mins % 60}m jugando`;
+        }else{
+          gameElapsed.textContent = `${mins}m jugando`;
+        }
+      }
+      updateElapsed();
+      if(window._gameElapsedInterval) clearInterval(window._gameElapsedInterval);
+      window._gameElapsedInterval = setInterval(updateElapsed, 30000);
+    }else{
+      gameElapsed.textContent = "";
+      if(window._gameElapsedInterval){
+        clearInterval(window._gameElapsedInterval);
+        window._gameElapsedInterval = null;
+      }
+    }
+
+  }else{
+    gamePanel.style.display = "none";
+    if(window._gameElapsedInterval){
+      clearInterval(window._gameElapsedInterval);
+      window._gameElapsedInterval = null;
+    }
+  }
+}
+
+
+/* Spotify progress updater */
+function updateSpotifyProgress(spotify){
+  const fillEl = document.getElementById("spotifyProgressFill");
+  const elapsedEl = document.getElementById("spotifyTimeElapsed");
+  const totalEl = document.getElementById("spotifyTimeTotal");
+
+  if(!spotify || !spotify.timestamps) return;
+
+  const start = spotify.timestamps.start;
+  const end = spotify.timestamps.end;
+  const duration = end - start;
+
+  totalEl.textContent = formatSpotifyTime(duration);
+
+  function tick(){
+    const now = Date.now();
+    const elapsed = Math.max(0, Math.min(now - start, duration));
+    const pct = (elapsed / duration) * 100;
+    fillEl.style.width = pct + "%";
+    elapsedEl.textContent = formatSpotifyTime(elapsed);
+  }
+
+  tick();
+
+  if(window._spotifyInterval) clearInterval(window._spotifyInterval);
+  window._spotifyInterval = setInterval(tick, 1000);
+}
+
+function formatSpotifyTime(ms){
+  const totalSecs = Math.floor(ms / 1000);
+  const mins = Math.floor(totalSecs / 60);
+  const secs = totalSecs % 60;
+  return mins + ":" + String(secs).padStart(2, "0");
 }
 
 
